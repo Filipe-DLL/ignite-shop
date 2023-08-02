@@ -1,9 +1,12 @@
 import axios from "axios";
-import { GetStaticPaths, GetStaticProps } from "next";
+import Stripe from "stripe";
+
 import Image from "next/image";
+
+import { GetStaticPaths, GetStaticProps } from "next";
 import { useRouter } from "next/router";
 import { useState } from "react";
-import Stripe from "stripe";
+
 import { stripe } from "../../lib/stripe";
 import { ImageContainer, ProductContainer, ProductDetails } from "../../styles/pages/product";
 
@@ -28,7 +31,6 @@ export default function Product({ product }: ProductProps) {
       const response = await axios.post('/api/checkout', {
         priceId: product.defaultPriceId,
       })
-      alert('test')
 
       const { checkoutUrl } = response.data
 
@@ -39,7 +41,6 @@ export default function Product({ product }: ProductProps) {
 
       setIsCreatingCheckoutSession(false)
       alert('Falha ao redirecionar ao checkout');
-
     }
   }
 
