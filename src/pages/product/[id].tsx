@@ -1,11 +1,15 @@
 import axios from "axios";
-import { GetStaticPaths, GetStaticProps } from "next";
+import Stripe from "stripe";
+
 import Image from "next/image";
+
+import { GetStaticPaths, GetStaticProps } from "next";
 import { useRouter } from "next/router";
 import { useState } from "react";
-import Stripe from "stripe";
+
 import { stripe } from "../../lib/stripe";
 import { ImageContainer, ProductContainer, ProductDetails } from "../../styles/pages/product";
+import Head from "next/head";
 
 interface ProductProps {
   product: {
@@ -28,7 +32,6 @@ export default function Product({ product }: ProductProps) {
       const response = await axios.post('/api/checkout', {
         priceId: product.defaultPriceId,
       })
-      alert('test')
 
       const { checkoutUrl } = response.data
 
@@ -39,7 +42,6 @@ export default function Product({ product }: ProductProps) {
 
       setIsCreatingCheckoutSession(false)
       alert('Falha ao redirecionar ao checkout');
-
     }
   }
 
@@ -50,22 +52,28 @@ export default function Product({ product }: ProductProps) {
   }
 
   return (
-    <ProductContainer>
-      <ImageContainer>
-        <Image src={product.imageUrl} width={520} height={480} alt="" />
-      </ImageContainer>
-      <ProductDetails>
+    <>
+      <Head>
+        <title>{product.name} | Ignite Shop</title>
+      </Head>
 
-        <h1>{product.name}</h1>
+      <ProductContainer>
+        <ImageContainer>
+          <Image src={product.imageUrl} width={520} height={480} alt="" />
+        </ImageContainer>
+        <ProductDetails>
 
-        <span>{product.price}</span>
+          <h1>{product.name}</h1>
 
-        <p>{product.description}</p>
+          <span>{product.price}</span>
 
-        <button disabled={isCreatingCheckoutSession} onClick={handleBuyProduct}>Comprar Agora</button>
+          <p>{product.description}</p>
 
-      </ProductDetails>
-    </ProductContainer>
+          <button disabled={isCreatingCheckoutSession} onClick={handleBuyProduct}>Comprar Agora</button>
+
+        </ProductDetails>
+      </ProductContainer>
+    </>
   )
 }
 
