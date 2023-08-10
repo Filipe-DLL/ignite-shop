@@ -11,7 +11,7 @@ export default function App({ Component, pageProps }: AppProps) {
   return (
     <Container>
       <Header>
-        <Link href={'http://localhost:3000/'}>
+        <Link href={'/'}>
           <img src={logoImage.src} alt="logo" />
         </Link>
       </Header>
